@@ -167,6 +167,47 @@ html {
   position: relative;
 }
 
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 25px auto;
+  max-width: 1110px;
+}
+
+.msg-alert {
+  text-align: center;
+  z-index: 999999;
+  font-weight: 600;
+}
+
+.success {
+  background-color: #a4ffa4;
+  color: #006905;
+  border: solid 1px #006905;
+  padding: 0.8rem;
+  border-radius: 0.3rem;
+}
+
+.danger {
+  background-color: #ffa4a4;
+  color: #690000;
+  border: solid 1px #690000;
+  padding: 0.8rem;
+  border-radius: 0.3rem;
+}
+
+.btns-list-cad {
+  display: flex;
+}
+
+.list-all {
+  text-decoration: none;
+  text-align: center;
+  display: none;
+  margin-right: 1rem;
+}
+
 .row {
   display: flex;
   width: 100%;

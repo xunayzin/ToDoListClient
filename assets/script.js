@@ -29,9 +29,24 @@ async function findAllPaletas() {
 async function findByIdPaletas() {
   const id = document.querySelector("#idPaleta").value;
 
-  const response = await fetch(`${baseURL}/paleta/${id}`);
+  localStorage.setItem("message", "Digite um ID para pesquisar!");
+  localStorage.setItem("type", "danger");
+
+  closeMessageAlert();
+  
+
+  const response = await fetch(`${baseURL}/one-paleta/${id}`);
 
   const paleta = await response.json();
+
+  if (paleta.message != undefined) {
+    localStorage.setItem("message", paleta.message);
+    localStorage.setItem("type", "danger");
+    return showMessageAlert();
+  }
+
+  document.querySelector(".list-all").style.display = "block"
+  document.querySelector(".paleta-list").style.display = "none";
 
   const paletaEscolhidaDiv = document.querySelector("#paletaEscolhida");
 
@@ -60,7 +75,7 @@ async function abrirModal(id = null) {
 
     document.querySelector("#button-form-modal").innerText = "Atualizar Paleta";
 
-    const response = await fetch(`${baseURL}/paleta/${id}`);
+    const response = await fetch(`${baseURL}/one-paleta/${id}`);
     const paleta = await response.json();
 
     document.querySelector("#sabor").value = paleta.sabor;
@@ -104,7 +119,7 @@ async function createPaleta() {
 
   const modEdicaoAtivado = id > 0;
 
-  const endpoint = baseURL + (modEdicaoAtivado ? `/update/${id}` : `/create`);
+  const endpoint = baseURL + (modoEdicaoAtivado ? `/update-paleta/${id}` : `/create-paleta`);
 
   const response = await fetch(endpoint, {
     method: modEdicaoAtivado ? "put" : "post",
@@ -155,7 +170,7 @@ function fecharModalDelete() {
 }
 
 async function deletePaleta(id) {
-  const response = await fetch(`${baseURL}/delete/${id}`, {
+  const response = await fetch(`${baseURL}/delete-paleta/${id}`, {
     method: "delete",
     headers: {
       "Content-Type": "application/json",
@@ -168,3 +183,21 @@ async function deletePaleta(id) {
 
   document.location.reload(true);
 }
+
+const msgAlert = document.querySelector(".msg-alert");
+
+function closeMessageAlert() {
+  setTimeout(function () {
+    msgAlert.innerText = "";
+    msgAlert.classList.remove(localStorage.getItem("type"));
+    localStorage.clear();
+  }, 3001);
+}
+
+function showMessageAlert() {
+  msgAlert.innerText = localStorage.getItem("message");
+  msgAlert.classList.add(localStorage.getItem("type"));
+  closeMessageAlert();
+}
+
+showMessageAlert();
